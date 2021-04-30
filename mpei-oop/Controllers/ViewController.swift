@@ -1,6 +1,6 @@
 import UIKit
 
-class ViewController: UIViewController {
+class LibraryViewController: UIViewController {
     
     private var newScanButton: UIButton!
     
