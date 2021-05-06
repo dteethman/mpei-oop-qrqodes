@@ -12,7 +12,7 @@ class LibraryViewController: UIViewController {
     }
     
     func setupLayout() {
-        self.view.backgroundColor = .white
+        self.view.backgroundColor = ColorSet.Theme.background.colorForMode(isDarkMode)
     }
     
     func setupNavBar() {
@@ -39,9 +39,17 @@ class LibraryViewController: UIViewController {
         ])
     }
     
-    @objc func newScanTapped(_ sender: UIButton!) {
-        print("aaa")
+    override func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
+        super.traitCollectionDidChange(previousTraitCollection)
+        self.view.backgroundColor = ColorSet.Theme.background.colorForMode(isDarkMode)
     }
+    
+    @objc func newScanTapped(_ sender: UIButton!) {
+        let scaner = QRScanerViewController()
+        scaner.modalPresentationStyle = .fullScreen
+        self.present(scaner, animated: true, completion: nil)
+    }
+    
 
 }
 
