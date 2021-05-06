@@ -14,11 +14,15 @@ class QRScanerViewController: UIViewController, AVCaptureMetadataOutputObjectsDe
     
     var qrPreviewView: UIImageView!
     var backButton: UIButton!
+    var cancelButton: UIButton!
     var retakeButton: UIButton!
     var doneButton: UIButton!
+    var cardView: UIView!
     
     var blurEffect: UIBlurEffect!
     var blurEffectView: UIVisualEffectView!
+    
+    var cardViewBottomConstraint: NSLayoutConstraint!
     
     var currentState: LayoutState?
     
