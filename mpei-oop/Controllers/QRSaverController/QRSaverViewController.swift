@@ -47,6 +47,12 @@ class QRSaverViewController: UIViewController {
     
     @objc func saveAction(_ sender: UIButton!) {
         print(qr?.title, qr?.description, qr?.stringValue)
+        let cdManager = CoreDataManager()
+        if qr?.title != nil && qr?.stringValue != nil {
+            print("trying to saev")
+            cdManager.save(qr: qr!)
+        }
+        
     }
     
     
