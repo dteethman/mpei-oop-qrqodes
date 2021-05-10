@@ -17,13 +17,22 @@ class QRSaverViewController: UIViewController {
     }
     
     var iconImageView: UIImageView!
-    var qrTextField: UITextView!
+    var qrTextView: UITextView!
+    var titleTextField: UITextField!
+    var descriptionTextView: UITextView!
+    var saveButton: UIButton!
+    
+    var dismissKeyboardGR: UITapGestureRecognizer!
+    
+    let descriptionPlaceholderString = "Description (optional)" 
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        setApperance(isDarkMode)
+        
         setupLayout()
         updateLayout()
+        setApperance(isDarkMode)
+        
     }
     
     override func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
@@ -31,6 +40,14 @@ class QRSaverViewController: UIViewController {
         setApperance(isDarkMode)
     }
     
+    @objc func dismissKeyboard(_ sender: UIGestureRecognizer) {
+        self.view.endEditing(true)
+        setApperance(isDarkMode)
+    }
+    
+    @objc func saveAction(_ sender: UIButton!) {
+        print(qr?.title, qr?.description, qr?.stringValue)
+    }
     
     
 }
