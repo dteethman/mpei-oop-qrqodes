@@ -34,10 +34,12 @@ class QRCode {
     
     func getInfo() -> NSAttributedString {
         let resStr = NSMutableAttributedString()
+        
         let blackAtr = [NSMutableAttributedString.Key.font: UIFont.boldSystemFont(ofSize: 17),
                         NSMutableAttributedString.Key.foregroundColor: UIColor.label]
         let plainAtr = [NSMutableAttributedString.Key.font: UIFont.systemFont(ofSize: 17),
                         NSMutableAttributedString.Key.foregroundColor: UIColor.label]
+        
         let blackStr = NSMutableAttributedString(string:  "Text: ", attributes: blackAtr)
         let plainStr = NSMutableAttributedString(string: stringValue, attributes: plainAtr)
         
