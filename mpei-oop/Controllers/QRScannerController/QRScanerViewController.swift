@@ -26,10 +26,13 @@ class QRScanerViewController: UIViewController, AVCaptureMetadataOutputObjectsDe
     
     var currentState: LayoutState?
     
+    var qr: QRCode?
+    
 
     //MARK:- ViewController lifecycle
     override func viewDidLoad() {
         super.viewDidLoad()
+        
         
         prepareCaptureSession()
 
@@ -40,6 +43,7 @@ class QRScanerViewController: UIViewController, AVCaptureMetadataOutputObjectsDe
 
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
+        navigationController?.setNavigationBarHidden(true, animated: animated)
 
         if captureSession?.isRunning == false && currentState == .scanning {
             captureSession.startRunning()
@@ -48,6 +52,7 @@ class QRScanerViewController: UIViewController, AVCaptureMetadataOutputObjectsDe
 
     override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
+        navigationController?.setNavigationBarHidden(false, animated: animated)
 
         if captureSession?.isRunning == false && currentState == .scanning {
             captureSession.stopRunning()
@@ -114,21 +119,22 @@ class QRScanerViewController: UIViewController, AVCaptureMetadataOutputObjectsDe
         if let metadataObject = metadataObjects.first {
             guard let readableObject = metadataObject as? AVMetadataMachineReadableCodeObject else { return }
             guard let stringValue = readableObject.stringValue else { return }
-            TapticProvider.entry.provide(.notificationSuccess)
             found(code: stringValue)
         }
-
-        
     }
 
+    //Function called when QR found 
     func found(code: String) {
         print(code)
-        let qr = QRCode(stringValue: code)
-        let image = qr.getImage()
+        qr = QRCode(stringValue: code)
+        let image = qr?.getImage() 
         
         if let i = image {
+            TapticProvider.entry.provide(.notificationSuccess)
             qrPreviewView.image = i.resizableImage(withCapInsets: UIEdgeInsets(top: 10, left: 10, bottom: 10, right: 10), resizingMode: .stretch)
             updateLayout(state: .taken)
+        } else {
+            TapticProvider.entry.provide(.notoficationError)
         }
     }
 
@@ -149,7 +155,9 @@ class QRScanerViewController: UIViewController, AVCaptureMetadataOutputObjectsDe
     }
     
     @objc func doneAction(_ sender: UIButton!) {
-        self.dismiss(animated: true, completion: nil)
+        let vc = QRSaverViewController()
+        vc.qr = self.qr
+        navigationController?.pushViewController(vc, animated: true)
     }
     
     

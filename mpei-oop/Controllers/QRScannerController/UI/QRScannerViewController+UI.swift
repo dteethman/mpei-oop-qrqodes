@@ -24,9 +24,9 @@ extension QRScanerViewController {
         blurEffectView.autoresizingMask = [.flexibleWidth, .flexibleHeight]
         self.view.addSubview(blurEffectView)
         
-//        backButton = makeButton(imageName: "arrow.left")
         backButton = UIButton()
         backButton.setTitle("Cancel", for: .normal)
+        backButton.titleLabel?.font = UIFont.systemFont(ofSize: 17, weight: .semibold)
         backButton.translatesAutoresizingMaskIntoConstraints = false
         backButton.layer.cornerRadius = 8
         backButton.layer.cornerCurve = .continuous
@@ -56,10 +56,11 @@ extension QRScanerViewController {
         
         doneButton = UIButton()
         doneButton.setTitle("Continue", for: .normal)
+        doneButton.titleLabel?.font = UIFont.systemFont(ofSize: 17, weight: .semibold)
         doneButton.translatesAutoresizingMaskIntoConstraints = false
         doneButton.layer.cornerRadius = 8
         doneButton.layer.cornerCurve = .continuous
-        doneButton.addTarget(self, action: #selector(backAction(_:)), for: .touchUpInside)
+        doneButton.addTarget(self, action: #selector(doneAction(_:)), for: .touchUpInside)
         cardView.addSubview(doneButton)
         
         qrPreviewView = UIImageView()
@@ -110,13 +111,13 @@ extension QRScanerViewController {
         self.view.backgroundColor = ColorSet.Theme.background.colorForMode(isDarkMode)
         cardView.backgroundColor = ColorSet.Theme.background.colorForMode(isDarkMode)
         
-        backButton?.backgroundColor = UIColor.systemGray4
-        cancelButton?.backgroundColor = UIColor.systemGray4
-        retakeButton?.backgroundColor = UIColor.systemGray4
-        doneButton?.backgroundColor = UIColor.systemGray4
+        backButton?.backgroundColor = .white
+        cancelButton?.backgroundColor = .clear
+        retakeButton?.backgroundColor = .clear
+        doneButton?.backgroundColor = .systemBlue
         
-        backButton?.setTitleColor(.label, for: .normal)
-        doneButton?.setTitleColor(.label, for: .normal)
+        backButton?.setTitleColor(.black, for: .normal)
+        doneButton?.setTitleColor(.white, for: .normal)
     }
     
     func updateLayout(state: LayoutState) {
