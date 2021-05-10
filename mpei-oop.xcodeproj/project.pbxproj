@@ -11,7 +11,7 @@
 		428C7FF7263C936A008E54DE /* QRCode.swift in Sources */ = {isa = PBXBuildFile; fileRef = 428C7FF6263C936A008E54DE /* QRCode.swift */; };
 		429A194C2638844A00541AB2 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 429A194B2638844A00541AB2 /* AppDelegate.swift */; };
 		429A194E2638844A00541AB2 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 429A194D2638844A00541AB2 /* SceneDelegate.swift */; };
-		429A19502638844A00541AB2 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 429A194F2638844A00541AB2 /* ViewController.swift */; };
+		429A19502638844A00541AB2 /* LibraryViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 429A194F2638844A00541AB2 /* LibraryViewController.swift */; };
 		429A19552638844C00541AB2 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 429A19542638844C00541AB2 /* Assets.xcassets */; };
 		429A19582638844C00541AB2 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 429A19562638844C00541AB2 /* LaunchScreen.storyboard */; };
 		429A19632638844C00541AB2 /* mpei_oopTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 429A19622638844C00541AB2 /* mpei_oopTests.swift */; };
@@ -51,7 +51,7 @@
 		429A19482638844A00541AB2 /* mpei-oop.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "mpei-oop.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		429A194B2638844A00541AB2 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		429A194D2638844A00541AB2 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
-		429A194F2638844A00541AB2 /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
+		429A194F2638844A00541AB2 /* LibraryViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LibraryViewController.swift; sourceTree = "<group>"; };
 		429A19542638844C00541AB2 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		429A19572638844C00541AB2 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		429A19592638844C00541AB2 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
@@ -166,11 +166,19 @@
 		429A1982263C18B700541AB2 /* Controllers */ = {
 			isa = PBXGroup;
 			children = (
+				42D26AE32649484E00AA2F79 /* LibraryController */,
 				42DB5F2F26457F27006B7D73 /* QRSaverController */,
 				426610CE263EA81B005B5FF0 /* QRScannerController */,
-				429A194F2638844A00541AB2 /* ViewController.swift */,
 			);
 			path = Controllers;
+			sourceTree = "<group>";
+		};
+		42D26AE32649484E00AA2F79 /* LibraryController */ = {
+			isa = PBXGroup;
+			children = (
+				429A194F2638844A00541AB2 /* LibraryViewController.swift */,
+			);
+			path = LibraryController;
 			sourceTree = "<group>";
 		};
 		42DB5F2F26457F27006B7D73 /* QRSaverController */ = {
@@ -335,7 +343,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				429A19502638844A00541AB2 /* ViewController.swift in Sources */,
+				429A19502638844A00541AB2 /* LibraryViewController.swift in Sources */,
 				42DB5F3126457F53006B7D73 /* QRSaverViewController.swift in Sources */,
 				42E7C484264878A700E703E8 /* WiFiQRCode.swift in Sources */,
 				42E17272263C415300D8FEA6 /* Colors.swift in Sources */,
