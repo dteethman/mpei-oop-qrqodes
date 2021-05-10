@@ -45,7 +45,7 @@ class LibraryViewController: UIViewController {
     }
     
     @objc func newScanTapped(_ sender: UIButton!) {
-        let scaner = QRScanerViewController()
+        let scaner = UINavigationController(rootViewController: QRScanerViewController())
         scaner.modalPresentationStyle = .fullScreen
         self.present(scaner, animated: true, completion: nil)
     }
