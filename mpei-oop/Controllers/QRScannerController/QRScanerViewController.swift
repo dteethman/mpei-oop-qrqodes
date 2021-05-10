@@ -32,8 +32,7 @@ class QRScanerViewController: UIViewController, AVCaptureMetadataOutputObjectsDe
     //MARK:- ViewController lifecycle
     override func viewDidLoad() {
         super.viewDidLoad()
-        
-        
+   
         prepareCaptureSession()
 
         setupLayout()
@@ -146,6 +145,7 @@ class QRScanerViewController: UIViewController, AVCaptureMetadataOutputObjectsDe
         captureSession = nil
     }
     
+    //MARK:- Buttons actions
     @objc func backAction(_ sender: UIButton!) {
         self.dismiss(animated: true, completion: nil)
     }
