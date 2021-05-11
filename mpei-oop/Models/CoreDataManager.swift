@@ -5,6 +5,53 @@ class CoreDataManager {
     let persistentContainer = (UIApplication.shared.delegate as? AppDelegate)?.persistentContainer
     lazy var context = persistentContainer?.viewContext
     
+    func loadAsync(completion: (@escaping (_ result: [(qr: QRCode, id: NSManagedObjectID)]) -> Void)) {
+        let workerContext = NSManagedObjectContext(concurrencyType: .privateQueueConcurrencyType)
+
+        //set the parent NOT the persistent store coordinator
+        if let context = self.context {
+            workerContext.parent = context
+
+            workerContext.perform({
+
+                let fetchRequest = NSFetchRequest<QRCodes>(entityName: "QRCodes")
+                
+                let sortDescriptors = [NSSortDescriptor(key: "dateAdded", ascending: false)]
+                fetchRequest.sortDescriptors = sortDescriptors
+                
+                var result: [(QRCode, NSManagedObjectID)] = []
+                
+                do {
+                    let fetchedObjects = try context.fetch(fetchRequest)
+                    
+                    for obj in fetchedObjects {
+                        if let stringValue = obj.stringValue, let title = obj.title {
+                            if obj.type == "wifi" {
+                                let qr = WiFiQRCode(stringValue: stringValue, title: title, description: obj.desc)
+                                result.append((qr, obj.objectID))
+                            } else {
+                                let qr = QRCode(stringValue: stringValue, title: title, description: obj.desc)
+                                result.append((qr, obj.objectID))
+                            }
+                            print(obj.objectID)
+                        }
+                    }
+                    if result.count > 0 {
+                        DispatchQueue.main.async {
+                            completion(result)
+                        }
+                        
+                    }
+                    
+                } catch  {
+                    print("Error fetchuing QRs")
+                }
+
+            })
+        }
+        
+    }
+    
     func load() -> [(qr: QRCode, id: NSManagedObjectID)]? {
         if let context = self.context {
             let fetchRequest = NSFetchRequest<QRCodes>(entityName: "QRCodes")
@@ -71,7 +118,7 @@ class CoreDataManager {
     func delete(id: NSManagedObjectID) {
         if let context = self.context {
             do {
-                let obj = try context.object(with: id)
+                let obj = context.object(with: id)
                 context.delete(obj)
                 try context.save()
             } catch {
