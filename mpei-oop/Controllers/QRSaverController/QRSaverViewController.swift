@@ -24,33 +24,36 @@ class QRSaverViewController: UIViewController {
     
     var dismissKeyboardGR: UITapGestureRecognizer!
     
-    let descriptionPlaceholderString = "Description (optional)" 
+    let descriptionPlaceholderString = "Description (optional)"
+    
+    var onDismissAction: (() -> Void)!
     
     override func viewDidLoad() {
         super.viewDidLoad()
         
         setupLayout()
         updateLayout()
-        setApperance(isDarkMode)
+        setAppearance(isDarkMode)
         
     }
     
     override func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
         super.traitCollectionDidChange(previousTraitCollection)
-        setApperance(isDarkMode)
+        setAppearance(isDarkMode)
     }
     
     @objc func dismissKeyboard(_ sender: UIGestureRecognizer) {
         self.view.endEditing(true)
-        setApperance(isDarkMode)
+        setAppearance(isDarkMode)
     }
     
     @objc func saveAction(_ sender: UIButton!) {
-        print(qr?.title, qr?.description, qr?.stringValue)
         let cdManager = CoreDataManager()
         if qr?.title != nil && qr?.stringValue != nil {
-            print("trying to saev")
             cdManager.save(qr: qr!)
+            dismiss(animated: true) {
+                self.onDismissAction?()
+            }
         }
         
     }

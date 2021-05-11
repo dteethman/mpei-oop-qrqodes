@@ -28,6 +28,8 @@ class QRScanerViewController: UIViewController, AVCaptureMetadataOutputObjectsDe
     
     var qr: QRCode?
     
+    var onDismissAction: (() -> Void)!
+    
 
     //MARK:- ViewController lifecycle
     override func viewDidLoad() {
@@ -37,7 +39,7 @@ class QRScanerViewController: UIViewController, AVCaptureMetadataOutputObjectsDe
 
         setupLayout()
         updateLayout(state: .scanning)
-        setApperance(isDarkMode)
+        setAppearance(isDarkMode)
     }
 
     override func viewWillAppear(_ animated: Bool) {
@@ -69,7 +71,7 @@ class QRScanerViewController: UIViewController, AVCaptureMetadataOutputObjectsDe
     override func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
         super.traitCollectionDidChange(previousTraitCollection)
         
-        setApperance(isDarkMode)
+        setAppearance(isDarkMode)
         self.view.layoutIfNeeded()
     }
     
@@ -147,7 +149,9 @@ class QRScanerViewController: UIViewController, AVCaptureMetadataOutputObjectsDe
     
     //MARK:- Buttons actions
     @objc func backAction(_ sender: UIButton!) {
-        self.dismiss(animated: true, completion: nil)
+        self.dismiss(animated: true) {
+            self.onDismissAction?()
+        }
     }
     
     @objc func retakeAction(_ sender: UIButton!) {
@@ -157,6 +161,7 @@ class QRScanerViewController: UIViewController, AVCaptureMetadataOutputObjectsDe
     @objc func doneAction(_ sender: UIButton!) {
         let vc = QRSaverViewController()
         vc.qr = self.qr
+        vc.onDismissAction = self.onDismissAction
         navigationController?.pushViewController(vc, animated: true)
     }
     

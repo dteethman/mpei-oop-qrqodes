@@ -1,0 +1,59 @@
+import UIKit
+
+extension LibraryViewController {
+    func setupNavBar() {
+        self.title = "Library"
+        
+        guard let navigationBar = self.navigationController?.navigationBar else { return }
+        navigationBar.prefersLargeTitles = true
+        
+        newScanButton = UIButton()
+        newScanButton.translatesAutoresizingMaskIntoConstraints = false
+
+        let scanImageConfig = UIImage.SymbolConfiguration(pointSize: 140, weight: .bold, scale: .large)
+        let scanButtonImage = UIImage(systemName: "camera.circle.fill", withConfiguration: scanImageConfig)
+        newScanButton.setImage(scanButtonImage, for: .normal)
+        newScanButton.addTarget(self, action: #selector(scanAction(_:)), for: .touchUpInside)
+        
+        navigationBar.addSubview(newScanButton)
+        NSLayoutConstraint.activate([
+            newScanButton.bottomAnchor.constraint(equalTo: navigationBar.bottomAnchor, constant: -12),
+            newScanButton.rightAnchor.constraint(equalTo: navigationBar.rightAnchor, constant:  -16),
+            newScanButton.heightAnchor.constraint(equalToConstant: 40),
+            newScanButton.widthAnchor.constraint(equalTo: newScanButton.heightAnchor)
+            
+        ])
+        
+        self.observer = self.navigationController?.navigationBar.observe(\.bounds, options: [.new], changeHandler: { (navigationBar, changes) in
+            if let height = changes.newValue?.height {
+                self.newScanButton?.alpha = min(1, (height - 44) / 52)
+            }
+        })
+        
+        
+    }
+    
+    func setupLayout() {
+        let safeGuide = view.safeAreaLayoutGuide
+        
+        codesTableView = UITableView()
+        codesTableView.translatesAutoresizingMaskIntoConstraints = false
+        codesTableView.dataSource = self
+        codesTableView.delegate = self
+        codesTableView.register(QRCodeTableViewCell.self, forCellReuseIdentifier: "qrCodeCell")
+        codesTableView.backgroundColor = .clear
+        self.view.addSubview(codesTableView)
+        
+        NSLayoutConstraint.activate([
+            codesTableView.topAnchor.constraint(equalTo: safeGuide.topAnchor),
+            codesTableView.bottomAnchor.constraint(equalTo: safeGuide.bottomAnchor),
+            codesTableView.leadingAnchor.constraint(equalTo: safeGuide.leadingAnchor),
+            codesTableView.trailingAnchor.constraint(equalTo: safeGuide.trailingAnchor),
+        ])
+    }
+    
+    func setAppearance() {
+        self.view.backgroundColor = ColorSet.Theme.background.colorForMode(isDarkMode)
+    }
+
+}

@@ -1,42 +1,35 @@
 import UIKit
+import CoreData
 
 class LibraryViewController: UIViewController {
+    //MARK: - Variables
+    var newScanButton: UIButton!
+    var codesTableView: UITableView!
     
-    private var newScanButton: UIButton!
+    var observer: NSKeyValueObservation?
     
+    lazy var qrData: [(qr: QRCode, id: NSManagedObjectID)]! = nil {
+        didSet {
+            codesTableView?.reloadData()
+//            codesTableView?.layoutSubviews()
+            for d in qrData {
+                print(d.qr.title)
+            }
+        }
+    }
+    
+    //MARK: - ViewControllerLifecycle
     override func viewDidLoad() {
         super.viewDidLoad()
-        
         setupLayout()
+        setAppearance()
         setupNavBar()
-    }
-    
-    func setupLayout() {
-        self.view.backgroundColor = ColorSet.Theme.background.colorForMode(isDarkMode)
-    }
-    
-    func setupNavBar() {
-        self.title = "Library"
         
-        guard let navigationBar = self.navigationController?.navigationBar else { return }
-        navigationBar.prefersLargeTitles = true
+        CoreDataManager().loadAsync { result in
+            self.qrData = result
+        }
         
-        newScanButton = UIButton()
-        newScanButton.translatesAutoresizingMaskIntoConstraints = false
-
-        let scanImageConfig = UIImage.SymbolConfiguration(pointSize: 140, weight: .bold, scale: .large)
-        let scanButtonImage = UIImage(systemName: "camera.circle.fill", withConfiguration: scanImageConfig)
-        newScanButton.setImage(scanButtonImage, for: .normal)
-        newScanButton.addTarget(self, action: #selector(newScanTapped(_:)), for: .touchUpInside)
         
-        navigationBar.addSubview(newScanButton)
-        NSLayoutConstraint.activate([
-            newScanButton.bottomAnchor.constraint(equalTo: navigationBar.bottomAnchor, constant: -12),
-            newScanButton.rightAnchor.constraint(equalTo: navigationBar.rightAnchor, constant:  -16),
-            newScanButton.heightAnchor.constraint(equalToConstant: 40),
-            newScanButton.widthAnchor.constraint(equalTo: newScanButton.heightAnchor)
-            
-        ])
     }
     
     override func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
@@ -44,8 +37,16 @@ class LibraryViewController: UIViewController {
         self.view.backgroundColor = ColorSet.Theme.background.colorForMode(isDarkMode)
     }
     
-    @objc func newScanTapped(_ sender: UIButton!) {
-        let scaner = UINavigationController(rootViewController: QRScanerViewController())
+    //MARK: - Button actions
+    @objc func scanAction(_ sender: UIButton!) {
+        let scanerController = QRScanerViewController()
+        scanerController.onDismissAction = {
+            CoreDataManager().loadAsync { result in
+                self.qrData = result
+            }
+        }
+        
+        let scaner = UINavigationController(rootViewController: scanerController)
         scaner.modalPresentationStyle = .fullScreen
         self.present(scaner, animated: true, completion: nil)
     }

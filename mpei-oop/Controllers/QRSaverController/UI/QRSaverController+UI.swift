@@ -94,7 +94,7 @@ extension QRSaverViewController {
         }
     }
     
-    func setApperance(_ isDarkMode: Bool) {
+    func setAppearance(_ isDarkMode: Bool) {
         self.view.backgroundColor = ColorSet.Theme.background.colorForMode(isDarkMode)
         saveButton?.backgroundColor = saveButton?.isEnabled ?? false ? .systemBlue : .systemGray2
     }

@@ -107,7 +107,7 @@ extension QRScanerViewController {
         
     }
     
-    func setApperance(_ isDarkMode: Bool) {
+    func setAppearance(_ isDarkMode: Bool) {
         self.view.backgroundColor = ColorSet.Theme.background.colorForMode(isDarkMode)
         cardView.backgroundColor = ColorSet.Theme.background.colorForMode(isDarkMode)
         
