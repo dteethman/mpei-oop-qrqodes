@@ -7,6 +7,7 @@ extension LibraryViewController {
         guard let navigationBar = self.navigationController?.navigationBar else { return }
         navigationBar.prefersLargeTitles = true
         
+        
         newScanButton = UIButton()
         newScanButton.translatesAutoresizingMaskIntoConstraints = false
 
@@ -34,22 +35,23 @@ extension LibraryViewController {
     }
     
     func setupLayout() {
-        let safeGuide = view.safeAreaLayoutGuide
+//        let safeGuide = view.safeAreaLayoutGuide
         
-        codesTableView = UITableView()
-        codesTableView.translatesAutoresizingMaskIntoConstraints = false
-        codesTableView.dataSource = self
-        codesTableView.delegate = self
-        codesTableView.register(QRCodeTableViewCell.self, forCellReuseIdentifier: "qrCodeCell")
-        codesTableView.backgroundColor = .clear
-        self.view.addSubview(codesTableView)
+        tableView = UITableView()
+        tableView.translatesAutoresizingMaskIntoConstraints = false
+        tableView.dataSource = self
+        tableView.delegate = self
+        tableView.register(QRCodeTableViewCell.self, forCellReuseIdentifier: "qrCodeCell")
+        tableView.backgroundColor = .clear
+        tableView.tableFooterView = UIView()
+//        self.view.addSubview(codesTableView)
         
-        NSLayoutConstraint.activate([
-            codesTableView.topAnchor.constraint(equalTo: safeGuide.topAnchor),
-            codesTableView.bottomAnchor.constraint(equalTo: safeGuide.bottomAnchor),
-            codesTableView.leadingAnchor.constraint(equalTo: safeGuide.leadingAnchor),
-            codesTableView.trailingAnchor.constraint(equalTo: safeGuide.trailingAnchor),
-        ])
+//        NSLayoutConstraint.activate([
+//            codesTableView.topAnchor.constraint(equalTo: safeGuide.topAnchor),
+//            codesTableView.bottomAnchor.constraint(equalTo: safeGuide.bottomAnchor),
+//            codesTableView.leadingAnchor.constraint(equalTo: safeGuide.leadingAnchor),
+//            codesTableView.trailingAnchor.constraint(equalTo: safeGuide.trailingAnchor),
+//        ])
     }
     
     func setAppearance() {

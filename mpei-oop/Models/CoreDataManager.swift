@@ -115,6 +115,29 @@ class CoreDataManager {
         }
     }
     
+    func deleteAsync(id: NSManagedObjectID, completion: (@escaping () -> Void)) {
+        let workerContext = NSManagedObjectContext(concurrencyType: .privateQueueConcurrencyType)
+
+        //set the parent NOT the persistent store coordinator
+        if let context = self.context {
+            workerContext.parent = context
+
+            workerContext.perform({
+                do {
+                    let obj = context.object(with: id)
+                    context.delete(obj)
+                    try context.save()
+                    DispatchQueue.main.async {
+                        completion()
+                    }
+                } catch {
+                    return
+                }
+
+            })
+        }
+    }
+    
     func delete(id: NSManagedObjectID) {
         if let context = self.context {
             do {

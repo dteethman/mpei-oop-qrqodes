@@ -1,20 +1,17 @@
 import UIKit
 import CoreData
 
-class LibraryViewController: UIViewController {
+class LibraryViewController: UITableViewController {
     //MARK: - Variables
     var newScanButton: UIButton!
-    var codesTableView: UITableView!
+//    var codesTableView: UITableView!
     
     var observer: NSKeyValueObservation?
     
     lazy var qrData: [(qr: QRCode, id: NSManagedObjectID)]! = nil {
         didSet {
-            codesTableView?.reloadData()
-//            codesTableView?.layoutSubviews()
-            for d in qrData {
-                print(d.qr.title)
-            }
+            tableView?.reloadData()
+            tableView?.layoutSubviews()
         }
     }
     
@@ -25,11 +22,20 @@ class LibraryViewController: UIViewController {
         setAppearance()
         setupNavBar()
         
+        
         CoreDataManager().loadAsync { result in
             self.qrData = result
         }
-        
-        
+    }
+    
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
+        newScanButton.isHidden = false
+    }
+    
+    override func viewWillDisappear(_ animated: Bool) {
+        super.viewWillDisappear(animated)
+        newScanButton.isHidden = true
     }
     
     override func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
