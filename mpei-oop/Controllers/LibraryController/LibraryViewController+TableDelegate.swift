@@ -21,8 +21,6 @@ extension LibraryViewController {
         }
         
         cell.layoutIfNeeded()
-        
-//        print(cell.bounds.height ,cell.imageView?.bounds.height)
         return cell
     }
     

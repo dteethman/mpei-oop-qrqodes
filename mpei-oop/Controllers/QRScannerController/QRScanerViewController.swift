@@ -126,7 +126,6 @@ class QRScanerViewController: UIViewController, AVCaptureMetadataOutputObjectsDe
 
     //Function called when QR found 
     func found(code: String) {
-        print(code)
         qr = QRCode(stringValue: code)
         let image = qr?.getImage() 
         

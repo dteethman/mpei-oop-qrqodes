@@ -118,6 +118,9 @@ extension QRScanerViewController {
         
         backButton?.setTitleColor(.black, for: .normal)
         doneButton?.setTitleColor(.white, for: .normal)
+        
+        qrPreviewView?.layer.borderWidth = isDarkMode ? 0 : 1
+        qrPreviewView?.layer.borderColor = UIColor.systemGray5.cgColor
     }
     
     func updateLayout(state: LayoutState) {

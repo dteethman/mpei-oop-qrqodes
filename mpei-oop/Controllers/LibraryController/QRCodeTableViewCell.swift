@@ -74,7 +74,6 @@ class QRCodeTableViewCell: UITableViewCell {
     
     override func prepareForReuse() {
         super.prepareForReuse()
-        print("prepare for reuse")
         typeImageView?.image = nil
         titleLabel?.text = nil
         descriptionTextView?.text = nil

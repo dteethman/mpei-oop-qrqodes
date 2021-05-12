@@ -29,19 +29,19 @@ extension QRDetailedViewController {
         self.view.addSubview(deleteButton)
         
         NSLayoutConstraint.activate([
-            qrImageView.topAnchor.constraint(equalTo: safeGuide.topAnchor, constant: 20),
-            qrImageView.leadingAnchor.constraint(equalTo: safeGuide.leadingAnchor, constant: 16),
-            qrImageView.trailingAnchor.constraint(equalTo: safeGuide.trailingAnchor, constant: -16),
-            qrImageView.heightAnchor.constraint(equalTo: qrImageView.widthAnchor),
-            
             deleteButton.bottomAnchor.constraint(equalTo: safeGuide.bottomAnchor, constant: -28),
             deleteButton.leadingAnchor.constraint(equalTo: safeGuide.leadingAnchor, constant: 36),
             deleteButton.trailingAnchor.constraint(equalTo: safeGuide.trailingAnchor, constant: -36),
             deleteButton.heightAnchor.constraint(equalToConstant: 50),
             
+            qrImageView.topAnchor.constraint(equalTo: safeGuide.topAnchor, constant: 20),
+            qrImageView.leadingAnchor.constraint(equalTo: deleteButton.leadingAnchor),
+            qrImageView.trailingAnchor.constraint(equalTo: deleteButton.trailingAnchor),
+            qrImageView.heightAnchor.constraint(equalTo: qrImageView.widthAnchor),
+
             qrTextView.topAnchor.constraint(equalTo: qrImageView.bottomAnchor, constant: 20),
-            qrTextView.leadingAnchor.constraint(equalTo: qrImageView.leadingAnchor),
-            qrTextView.trailingAnchor.constraint(equalTo: qrImageView.trailingAnchor),
+            qrTextView.leadingAnchor.constraint(equalTo: deleteButton.leadingAnchor),
+            qrTextView.trailingAnchor.constraint(equalTo: deleteButton.trailingAnchor),
             qrTextView.bottomAnchor.constraint(equalTo: deleteButton.topAnchor, constant: -30),
         ])
         
@@ -51,6 +51,10 @@ extension QRDetailedViewController {
         
         if let text = qrData?.qr.getInfo() {
             qrTextView.attributedText = text
+        }
+        
+        if let title = qrData?.qr.title {
+            self.title = title
         }
     }
     
@@ -62,5 +66,8 @@ extension QRDetailedViewController {
         self.view.backgroundColor = ColorSet.Theme.background.colorForMode(isDarkMode)
         deleteButton?.backgroundColor = .systemRed
         deleteButton?.titleLabel?.textColor = .white
+        
+        qrImageView?.layer.borderWidth = isDarkMode ? 0 : 1
+        qrImageView?.layer.borderColor = UIColor.systemGray5.cgColor
     }
 }

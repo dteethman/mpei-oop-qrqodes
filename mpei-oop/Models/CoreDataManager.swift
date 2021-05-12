@@ -33,7 +33,6 @@ class CoreDataManager {
                                 let qr = QRCode(stringValue: stringValue, title: title, description: obj.desc)
                                 result.append((qr, obj.objectID))
                             }
-                            print(obj.objectID)
                         }
                     }
                     if result.count > 0 {
@@ -73,7 +72,6 @@ class CoreDataManager {
                             let qr = QRCode(stringValue: stringValue, title: title, description: obj.description)
                             result.append((qr, obj.objectID))
                         }
-                        print(obj.objectID)
                     }
                     
                 }
