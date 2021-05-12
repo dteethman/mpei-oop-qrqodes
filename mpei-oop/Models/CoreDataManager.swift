@@ -66,10 +66,10 @@ class CoreDataManager {
                 for obj in fetchedObjects {
                     if let stringValue = obj.stringValue, let title = obj.title {
                         if obj.type == "wifi" {
-                            let qr = WiFiQRCode(stringValue: stringValue, title: title, description: obj.description)
+                            let qr = WiFiQRCode(stringValue: stringValue, title: title, description: obj.desc)
                             result.append((qr, obj.objectID))
                         } else {
-                            let qr = QRCode(stringValue: stringValue, title: title, description: obj.description)
+                            let qr = QRCode(stringValue: stringValue, title: title, description: obj.desc)
                             result.append((qr, obj.objectID))
                         }
                     }

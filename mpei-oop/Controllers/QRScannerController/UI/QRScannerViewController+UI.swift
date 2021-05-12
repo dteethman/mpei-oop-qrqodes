@@ -41,17 +41,17 @@ extension QRScanerViewController {
         
         cancelButton = makeSymbolicButton(imageName: "xmark")
         cancelButton.translatesAutoresizingMaskIntoConstraints = false
-        cancelButton.tintColor = .red
-        cancelButton.layer.cornerRadius = 8
-        cancelButton.layer.cornerCurve = .continuous
+        cancelButton.layer.cornerRadius = 12
         cancelButton.addTarget(self, action: #selector(backAction(_:)), for: .touchUpInside)
         cardView.addSubview(cancelButton)
         
-        retakeButton = makeSymbolicButton(imageName: "arrow.triangle.2.circlepath")
+        retakeButton = UIButton()
+        retakeButton.setTitle("Retake", for: .normal)
+        retakeButton.titleLabel?.font = UIFont.systemFont(ofSize: 17, weight: .regular)
         retakeButton.translatesAutoresizingMaskIntoConstraints = false
         retakeButton.layer.cornerRadius = 8
         retakeButton.layer.cornerCurve = .continuous
-        retakeButton.addTarget(self, action: #selector(retakeAction(_:)), for: .touchUpInside)
+        retakeButton.addTarget(self, action: #selector(doneAction(_:)), for: .touchUpInside)
         cardView.addSubview(retakeButton)
         
         doneButton = UIButton()
@@ -80,27 +80,27 @@ extension QRScanerViewController {
             cardViewBottomConstraint,
             cardView.leadingAnchor.constraint(equalTo: safeGuide.leadingAnchor, constant: 6),
             cardView.trailingAnchor.constraint(equalTo: safeGuide.trailingAnchor, constant: -6),
-            cardView.heightAnchor.constraint(equalTo: cardView.widthAnchor, constant: 70),
+            cardView.heightAnchor.constraint(equalTo: cardView.widthAnchor, constant: 144),
         ])
         
         NSLayoutConstraint.activate([
-            cancelButton.bottomAnchor.constraint(equalTo: cardView.bottomAnchor, constant: -28),
-            cancelButton.leadingAnchor.constraint(equalTo: cardView.leadingAnchor, constant: 36),
-            cancelButton.heightAnchor.constraint(equalToConstant: 50),
+            cancelButton.topAnchor.constraint(equalTo: cardView.topAnchor, constant: 20),
+            cancelButton.trailingAnchor.constraint(equalTo: cardView.trailingAnchor, constant: -20),
+            cancelButton.heightAnchor.constraint(equalToConstant: 24),
             cancelButton.widthAnchor.constraint(equalTo: cancelButton.heightAnchor),
             
-            retakeButton.bottomAnchor.constraint(equalTo: cancelButton.bottomAnchor),
-            retakeButton.leadingAnchor.constraint(equalTo: cancelButton.trailingAnchor, constant: 6),
-            retakeButton.heightAnchor.constraint(equalTo: cancelButton.heightAnchor),
-            retakeButton.widthAnchor.constraint(equalTo: retakeButton.heightAnchor),
+            retakeButton.bottomAnchor.constraint(equalTo: cardView.bottomAnchor, constant: -18),
+            retakeButton.leadingAnchor.constraint(equalTo: cardView.leadingAnchor, constant: 36),
+            retakeButton.trailingAnchor.constraint(equalTo: cardView.trailingAnchor, constant: -36),
+            retakeButton.heightAnchor.constraint(equalToConstant: 50),
             
-            doneButton.bottomAnchor.constraint(equalTo: cancelButton.bottomAnchor),
-            doneButton.leadingAnchor.constraint(equalTo: retakeButton.trailingAnchor, constant: 6),
-            doneButton.trailingAnchor.constraint(equalTo: cardView.trailingAnchor, constant: -36),
-            doneButton.heightAnchor.constraint(equalTo: cancelButton.heightAnchor),
+            doneButton.bottomAnchor.constraint(equalTo: retakeButton.topAnchor, constant: -10),
+            doneButton.leadingAnchor.constraint(equalTo: retakeButton.leadingAnchor),
+            doneButton.trailingAnchor.constraint(equalTo: retakeButton.trailingAnchor),
+            doneButton.heightAnchor.constraint(equalToConstant: 50),
             
-            qrPreviewView.bottomAnchor.constraint(equalTo: cancelButton.topAnchor, constant: -28),
-            qrPreviewView.leadingAnchor.constraint(equalTo: cancelButton.leadingAnchor),
+            qrPreviewView.bottomAnchor.constraint(equalTo: doneButton.topAnchor, constant: -28),
+            qrPreviewView.leadingAnchor.constraint(equalTo: doneButton.leadingAnchor),
             qrPreviewView.trailingAnchor.constraint(equalTo: doneButton.trailingAnchor),
             qrPreviewView.heightAnchor.constraint(equalTo: qrPreviewView.widthAnchor),
         ])
@@ -109,15 +109,17 @@ extension QRScanerViewController {
     
     func setAppearance(_ isDarkMode: Bool) {
         self.view.backgroundColor = ColorSet.Theme.background.colorForMode(isDarkMode)
-        cardView.backgroundColor = ColorSet.Theme.background.colorForMode(isDarkMode)
+        cardView?.backgroundColor = ColorSet.Theme.background.colorForMode(isDarkMode)
         
         backButton?.backgroundColor = .white
-        cancelButton?.backgroundColor = .clear
+        cancelButton?.backgroundColor = .systemGray6
         retakeButton?.backgroundColor = .clear
         doneButton?.backgroundColor = .systemBlue
         
-        backButton?.setTitleColor(.black, for: .normal)
+        backButton?.setTitleColor(.systemGray4, for: .normal)
         doneButton?.setTitleColor(.white, for: .normal)
+        cancelButton?.tintColor = .systemGray4
+        retakeButton?.setTitleColor(.systemBlue, for: .normal)
         
         qrPreviewView?.layer.borderWidth = isDarkMode ? 0 : 1
         qrPreviewView?.layer.borderColor = UIColor.systemGray5.cgColor
@@ -132,7 +134,7 @@ extension QRScanerViewController {
                 captureSession.startRunning()
             }
             
-            cardViewBottomConstraint.constant = 500
+            cardViewBottomConstraint.constant = 800
             
             UIView.animate(withDuration: 0.15) { [self] in
                 blurEffectView?.alpha = 0
@@ -158,7 +160,7 @@ extension QRScanerViewController {
     }
     
     func makeSymbolicButton(imageName: String) -> UIButton {
-        let imageConfig = UIImage.SymbolConfiguration(pointSize: 24, weight: .medium, scale: .large)
+        let imageConfig = UIImage.SymbolConfiguration(pointSize: 9, weight: .black, scale: .large)
         let image = UIImage(systemName: imageName, withConfiguration: imageConfig)
         
         let button = UIButton()
