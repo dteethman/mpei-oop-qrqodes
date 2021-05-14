@@ -45,7 +45,7 @@ extension QRDetailedViewController {
             qrTextView.bottomAnchor.constraint(equalTo: deleteButton.topAnchor, constant: -30),
         ])
         
-        if let image = qrData.qr.getImage() {
+        if let image = qrData?.qr.getImage() {
             qrImageView?.image = image
         }
         

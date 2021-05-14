@@ -1,31 +1,37 @@
 import UIKit
 import CoreData
 
-class LibraryViewController: UITableViewController {
+class LibraryView: UITableViewController {
     //MARK: - Variables
+    private(set) var viewModel: LibraryViewModel?
+    
     var newScanButton: UIButton!
-//    var codesTableView: UITableView!
     
     var observer: NSKeyValueObservation?
     
-    lazy var qrData: [(qr: QRCode, id: NSManagedObjectID)]! = nil {
-        didSet {
-            tableView?.reloadData()
-            tableView?.layoutSubviews()
-        }
-    }
+//    lazy var qrData: [(qr: QRCode, id: NSManagedObjectID)]! = nil {
+//        didSet {
+//            tableView?.reloadData()
+//            tableView?.layoutSubviews()
+//        }
+//    }
     
     //MARK: - ViewControllerLifecycle
     override func viewDidLoad() {
         super.viewDidLoad()
+        let dataManager = QRDataManager()
+        viewModel = LibraryViewModel(dataManager: dataManager)
+        
+        viewModel?.library.bind(listener: { libraryItems in
+            self.tableView.reloadData()
+            self.tableView.layoutSubviews()
+        })
+        
         setupLayout()
         setAppearance()
         setupNavBar()
         
-        
-        CoreDataManager().loadAsync { result in
-            self.qrData = result
-        }
+        viewModel?.loadLibrary()
     }
     
     override func viewDidAppear(_ animated: Bool) {
@@ -47,8 +53,8 @@ class LibraryViewController: UITableViewController {
     @objc func scanAction(_ sender: UIButton!) {
         let scanerController = QRScanerViewController()
         scanerController.onDismissAction = {
-            CoreDataManager().loadAsync { result in
-                self.qrData = result
+            QRDataManager().loadAsync { result in
+                self.viewModel?.loadLibrary()
             }
         }
         

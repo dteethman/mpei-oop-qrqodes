@@ -1,8 +1,8 @@
 import CoreData
 import UIKit
 
-class CoreDataManager {
-    let persistentContainer = (UIApplication.shared.delegate as? AppDelegate)?.persistentContainer
+class QRDataManager {
+    private let persistentContainer = (UIApplication.shared.delegate as? AppDelegate)?.persistentContainer
     lazy var context = persistentContainer?.viewContext
     
     func loadAsync(completion: (@escaping (_ result: [(qr: QRCode, id: NSManagedObjectID)]) -> Void)) {

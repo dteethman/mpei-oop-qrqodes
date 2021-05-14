@@ -48,7 +48,7 @@ class QRSaverViewController: UIViewController {
     }
     
     @objc func saveAction(_ sender: UIButton!) {
-        let cdManager = CoreDataManager()
+        let cdManager = QRDataManager()
         if qr?.title != nil && qr?.stringValue != nil {
             cdManager.save(qr: qr!)
             dismiss(animated: true) {

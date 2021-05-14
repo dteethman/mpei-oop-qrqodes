@@ -1,6 +1,6 @@
 import UIKit
 
-extension LibraryViewController {
+extension LibraryView {
     func setupNavBar() {
         self.title = "Library"
         
@@ -35,8 +35,6 @@ extension LibraryViewController {
     }
     
     func setupLayout() {
-//        let safeGuide = view.safeAreaLayoutGuide
-        
         tableView = UITableView()
         tableView.translatesAutoresizingMaskIntoConstraints = false
         tableView.dataSource = self
@@ -44,16 +42,8 @@ extension LibraryViewController {
         tableView.register(QRCodeTableViewCell.self, forCellReuseIdentifier: "qrCodeCell")
         tableView.backgroundColor = .clear
         tableView.tableFooterView = UIView()
-//        self.view.addSubview(codesTableView)
-        
-//        NSLayoutConstraint.activate([
-//            codesTableView.topAnchor.constraint(equalTo: safeGuide.topAnchor),
-//            codesTableView.bottomAnchor.constraint(equalTo: safeGuide.bottomAnchor),
-//            codesTableView.leadingAnchor.constraint(equalTo: safeGuide.leadingAnchor),
-//            codesTableView.trailingAnchor.constraint(equalTo: safeGuide.trailingAnchor),
-//        ])
     }
-    
+        
     func setAppearance() {
         self.view.backgroundColor = ColorSet.Theme.background.colorForMode(isDarkMode)
     }

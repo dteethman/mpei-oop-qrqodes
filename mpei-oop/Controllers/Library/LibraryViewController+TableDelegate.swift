@@ -1,23 +1,24 @@
 import UIKit
 
-extension LibraryViewController {
+extension LibraryView {
     override func numberOfSections(in tableView: UITableView) -> Int {
         return 1
     }
     
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        if qrData != nil {
-            return qrData!.count
-        } else {
-            return 0
-        }
+        guard let qrData = self.viewModel?.library.value else { return 0 }
+
+        return qrData.count
     }
     
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "qrCodeCell", for: indexPath) as! QRCodeTableViewCell
-                
-        if qrData != nil && qrData.count > 0{
-            cell.qr =  qrData![indexPath.row].qr
+        
+        guard let qrData = self.viewModel?.library.value else { return cell }
+        print (qrData.count)
+
+        if qrData.count > 0 {
+            cell.qr =  qrData[indexPath.row].0
         }
         
         cell.layoutIfNeeded()
@@ -30,15 +31,13 @@ extension LibraryViewController {
     
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         tableView.deselectRow(at: indexPath, animated: true)
-
+        guard let codes = self.viewModel?.library.value else { return }
+        
         let vc = QRDetailedViewController()
-        vc.qrData = self.qrData[indexPath.row]
-        vc.onDismissAction = { [self] in
-            CoreDataManager().deleteAsync(id: qrData[indexPath.row].id) {
-                CoreDataManager().loadAsync { result in
-                    self.qrData = result
-                }
-            }
+        vc.qrData = codes[indexPath.row]
+        vc.onDismissAction = { [weak self] in
+            let id = codes[indexPath.row].1
+            self?.viewModel?.delete(id: id)
         }
         navigationController?.pushViewController(vc, animated: true)
         
