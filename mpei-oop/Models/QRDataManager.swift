@@ -5,7 +5,7 @@ class QRDataManager {
     private let persistentContainer = (UIApplication.shared.delegate as? AppDelegate)?.persistentContainer
     lazy var context = persistentContainer?.viewContext
     
-    func loadAsync(completion: (@escaping (_ result: [(qr: QRCode, id: NSManagedObjectID)]) -> Void)) {
+    func loadAsync(completion: (@escaping (_ result: [(code: QRCode, id: NSManagedObjectID)]) -> Void)) {
         let workerContext = NSManagedObjectContext(concurrencyType: .privateQueueConcurrencyType)
 
         //set the parent NOT the persistent store coordinator
@@ -51,7 +51,7 @@ class QRDataManager {
         
     }
     
-    func load() -> [(qr: QRCode, id: NSManagedObjectID)]? {
+    func load() -> [(code: QRCode, id: NSManagedObjectID)]? {
         if let context = self.context {
             let fetchRequest = NSFetchRequest<QRCodes>(entityName: "QRCodes")
             
@@ -87,7 +87,7 @@ class QRDataManager {
         return nil
     }
     
-    func save(qr: QRCode) {
+    func save(code: QRCode) {
         if let context = self.context {
             guard let entityDescription = NSEntityDescription.entity(forEntityName: "QRCodes", in: context) else {
                 return
@@ -95,11 +95,11 @@ class QRDataManager {
             
             let newObj = NSManagedObject(entity: entityDescription, insertInto: context)
             
-            guard let title = qr.title else { return }
-            newObj.setValue(qr.stringValue, forKey: "stringValue")
+            guard let title = code.title else { return }
+            newObj.setValue(code.stringValue, forKey: "stringValue")
             newObj.setValue(title, forKey: "title")
-            newObj.setValue(qr.description, forKey: "desc")
-            if qr is WiFiQRCode {
+            newObj.setValue(code.description, forKey: "desc")
+            if code is WiFiQRCode {
                 newObj.setValue("wifi", forKey: "type")
             }
             newObj.setValue(Date(), forKey: "dateAdded")
@@ -107,7 +107,7 @@ class QRDataManager {
             do {
                 try context.save()
             } catch {
-                print("Error saving QR \(qr.stringValue)")
+                print("Error saving QR \(code.stringValue)")
                 return
             }
         }

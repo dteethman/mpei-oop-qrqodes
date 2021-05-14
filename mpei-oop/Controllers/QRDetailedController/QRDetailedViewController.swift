@@ -7,7 +7,7 @@ class QRDetailedViewController: UIViewController {
     var qrTextView: UITextView!
     var deleteButton: UIButton!
     
-    var qrData: (qr: QRCode, id: NSManagedObjectID)! 
+    var qrData: (code: QRCode, id: NSManagedObjectID)! 
     
     var onDismissAction: (() -> Void)!
     

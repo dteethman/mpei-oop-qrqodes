@@ -18,9 +18,13 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         // This delegate does not imply the connecting scene or session are new (see `application:configurationForConnectingSceneSession` instead).
         guard let windowScene = (scene as? UIWindowScene) else { return }
         
+        let dataManager = QRDataManager()
+        let libraryViewModel = LibraryViewModel(dataManager: dataManager)
+        let initialView = LibraryView(viewModel: libraryViewModel)
+        
         window = UIWindow(frame: UIScreen.main.bounds)
         window?.windowScene = windowScene
-        window?.rootViewController = UINavigationController(rootViewController: LibraryView())
+        window?.rootViewController = UINavigationController(rootViewController: initialView)
         window?.makeKeyAndVisible()
     }
 

@@ -39,7 +39,7 @@ extension LibraryView {
         tableView.translatesAutoresizingMaskIntoConstraints = false
         tableView.dataSource = self
         tableView.delegate = self
-        tableView.register(QRCodeTableViewCell.self, forCellReuseIdentifier: "qrCodeCell")
+        tableView.register(LibraryCell.self, forCellReuseIdentifier: "libraryCell")
         tableView.backgroundColor = .clear
         tableView.tableFooterView = UIView()
     }
