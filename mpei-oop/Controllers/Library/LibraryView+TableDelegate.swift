@@ -29,14 +29,9 @@ extension LibraryView {
     
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         tableView.deselectRow(at: indexPath, animated: true)
-        guard let codes = self.viewModel.library else { return }
+        guard self.viewModel.library != nil else { return }
         
-        let vc = QRDetailedViewController()
-        vc.qrData = codes[indexPath.row]
-        vc.onDismissAction = { [weak self] in
-            let id = codes[indexPath.row].id
-            self?.viewModel.delete(id: id)
-        }
+        let vc = QRDetailedView(viewModel: self.viewModel, index: indexPath.row)
         navigationController?.pushViewController(vc, animated: true)
         
     }

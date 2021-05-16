@@ -1,6 +1,6 @@
 import UIKit
 
-extension QRDetailedViewController {
+extension QRDetailedView {
     func setupLayout() {
         let safeGuide = view.safeAreaLayoutGuide
         
@@ -45,16 +45,24 @@ extension QRDetailedViewController {
             qrTextView.bottomAnchor.constraint(equalTo: deleteButton.topAnchor, constant: -30),
         ])
         
-        if let image = qrData?.code.getImage() {
-            qrImageView?.image = image
-        }
-        
-        if let text = qrData?.code.getInfo() {
-            qrTextView.attributedText = text
-        }
-        
-        if let title = qrData?.code.title {
-            self.title = title
+    }
+    
+    func updateLayout(code: QRCode?) {
+        if let code = code {
+            if let image = code.getImage() {
+                qrImageView?.image = image
+            }
+            
+            let text = code.getInfo()
+            qrTextView?.attributedText = text
+            
+            if let title = code.title {
+                self.title = title
+            }
+        } else {
+            qrImageView?.image = nil
+            qrTextView?.attributedText = nil
+            self.title = "Error loading QR"
         }
     }
     
