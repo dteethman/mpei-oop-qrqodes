@@ -26,8 +26,8 @@
 		42D26AED2649D84C00AA2F79 /* LibraryView+UI.swift in Sources */ = {isa = PBXBuildFile; fileRef = 42D26AEC2649D84C00AA2F79 /* LibraryView+UI.swift */; };
 		42D26AEF2649E10D00AA2F79 /* LibraryCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 42D26AEE2649E10D00AA2F79 /* LibraryCell.swift */; };
 		42D26AF12649E4A000AA2F79 /* LibraryView+TableDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 42D26AF02649E4A000AA2F79 /* LibraryView+TableDelegate.swift */; };
-		42D26AF4264AEB6500AA2F79 /* QRDetailedViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 42D26AF3264AEB6500AA2F79 /* QRDetailedViewController.swift */; };
-		42D26AF6264AEB7600AA2F79 /* QRDetailedViewController+UI.swift in Sources */ = {isa = PBXBuildFile; fileRef = 42D26AF5264AEB7600AA2F79 /* QRDetailedViewController+UI.swift */; };
+		42D26AF4264AEB6500AA2F79 /* QRDetailedView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 42D26AF3264AEB6500AA2F79 /* QRDetailedView.swift */; };
+		42D26AF6264AEB7600AA2F79 /* QRDetailedView+UI.swift in Sources */ = {isa = PBXBuildFile; fileRef = 42D26AF5264AEB7600AA2F79 /* QRDetailedView+UI.swift */; };
 		42D95181263C34F300F2EF22 /* DTBunchOfExt in Frameworks */ = {isa = PBXBuildFile; productRef = 42D95180263C34F300F2EF22 /* DTBunchOfExt */; };
 		42DB5F3126457F53006B7D73 /* QRSaverViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 42DB5F3026457F53006B7D73 /* QRSaverViewController.swift */; };
 		42DB5F3226457F53006B7D73 /* QRSaverViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 42DB5F3026457F53006B7D73 /* QRSaverViewController.swift */; };
@@ -78,8 +78,8 @@
 		42D26AEC2649D84C00AA2F79 /* LibraryView+UI.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "LibraryView+UI.swift"; sourceTree = "<group>"; };
 		42D26AEE2649E10D00AA2F79 /* LibraryCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LibraryCell.swift; sourceTree = "<group>"; };
 		42D26AF02649E4A000AA2F79 /* LibraryView+TableDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "LibraryView+TableDelegate.swift"; sourceTree = "<group>"; };
-		42D26AF3264AEB6500AA2F79 /* QRDetailedViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QRDetailedViewController.swift; sourceTree = "<group>"; };
-		42D26AF5264AEB7600AA2F79 /* QRDetailedViewController+UI.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "QRDetailedViewController+UI.swift"; sourceTree = "<group>"; };
+		42D26AF3264AEB6500AA2F79 /* QRDetailedView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QRDetailedView.swift; sourceTree = "<group>"; };
+		42D26AF5264AEB7600AA2F79 /* QRDetailedView+UI.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "QRDetailedView+UI.swift"; sourceTree = "<group>"; };
 		42DB5F3026457F53006B7D73 /* QRSaverViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QRSaverViewController.swift; sourceTree = "<group>"; };
 		42E17271263C415300D8FEA6 /* Colors.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Colors.swift; sourceTree = "<group>"; };
 		42E7C4802645E8A300E703E8 /* QRSaverController+UI.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "QRSaverController+UI.swift"; sourceTree = "<group>"; };
@@ -118,6 +118,14 @@
 				42D26AEE2649E10D00AA2F79 /* LibraryCell.swift */,
 			);
 			path = LibraryCell;
+			sourceTree = "<group>";
+		};
+		424F5913265157CE00FC38B6 /* ViewModels */ = {
+			isa = PBXGroup;
+			children = (
+				424F590E264DBB8200FC38B6 /* LibraryViewModel.swift */,
+			);
+			path = ViewModels;
 			sourceTree = "<group>";
 		};
 		426610CD263EA802005B5FF0 /* UI */ = {
@@ -160,8 +168,9 @@
 		429A194A2638844A00541AB2 /* mpei-oop */ = {
 			isa = PBXGroup;
 			children = (
+				424F5913265157CE00FC38B6 /* ViewModels */,
 				42E17270263C414200D8FEA6 /* Models */,
-				429A1982263C18B700541AB2 /* Controllers */,
+				429A1982263C18B700541AB2 /* Views */,
 				429A194B2638844A00541AB2 /* AppDelegate.swift */,
 				429A194D2638844A00541AB2 /* SceneDelegate.swift */,
 				429A19542638844C00541AB2 /* Assets.xcassets */,
@@ -190,15 +199,15 @@
 			path = "mpei-oopUITests";
 			sourceTree = "<group>";
 		};
-		429A1982263C18B700541AB2 /* Controllers */ = {
+		429A1982263C18B700541AB2 /* Views */ = {
 			isa = PBXGroup;
 			children = (
-				42D26AF2264AE7A300AA2F79 /* QRDetailedController */,
+				42D26AF2264AE7A300AA2F79 /* QRDetailed */,
 				42D26AE32649484E00AA2F79 /* Library */,
 				42DB5F2F26457F27006B7D73 /* QRSaverController */,
 				426610CE263EA81B005B5FF0 /* QRScannerController */,
 			);
-			path = Controllers;
+			path = Views;
 			sourceTree = "<group>";
 		};
 		42D26AE32649484E00AA2F79 /* Library */ = {
@@ -208,7 +217,6 @@
 				429A194F2638844A00541AB2 /* LibraryView.swift */,
 				42D26AEC2649D84C00AA2F79 /* LibraryView+UI.swift */,
 				42D26AF02649E4A000AA2F79 /* LibraryView+TableDelegate.swift */,
-				424F590E264DBB8200FC38B6 /* LibraryViewModel.swift */,
 			);
 			path = Library;
 			sourceTree = "<group>";
@@ -222,13 +230,13 @@
 			path = QRCodes;
 			sourceTree = "<group>";
 		};
-		42D26AF2264AE7A300AA2F79 /* QRDetailedController */ = {
+		42D26AF2264AE7A300AA2F79 /* QRDetailed */ = {
 			isa = PBXGroup;
 			children = (
-				42D26AF3264AEB6500AA2F79 /* QRDetailedViewController.swift */,
-				42D26AF5264AEB7600AA2F79 /* QRDetailedViewController+UI.swift */,
+				42D26AF3264AEB6500AA2F79 /* QRDetailedView.swift */,
+				42D26AF5264AEB7600AA2F79 /* QRDetailedView+UI.swift */,
 			);
-			path = QRDetailedController;
+			path = QRDetailed;
 			sourceTree = "<group>";
 		};
 		42DB5F2F26457F27006B7D73 /* QRSaverController */ = {
@@ -400,7 +408,7 @@
 				42E7C484264878A700E703E8 /* WiFiQRCode.swift in Sources */,
 				42E17272263C415300D8FEA6 /* Colors.swift in Sources */,
 				429A198A263C247800541AB2 /* QRScanerViewController.swift in Sources */,
-				42D26AF4264AEB6500AA2F79 /* QRDetailedViewController.swift in Sources */,
+				42D26AF4264AEB6500AA2F79 /* QRDetailedView.swift in Sources */,
 				42D26AF12649E4A000AA2F79 /* LibraryView+TableDelegate.swift in Sources */,
 				424F590F264DBB8200FC38B6 /* LibraryViewModel.swift in Sources */,
 				42D26AED2649D84C00AA2F79 /* LibraryView+UI.swift in Sources */,
@@ -408,7 +416,7 @@
 				42D26AEB2649AD8E00AA2F79 /* QRDataManager.swift in Sources */,
 				42E7C4812645E8A300E703E8 /* QRSaverController+UI.swift in Sources */,
 				42D26AE6264954FA00AA2F79 /* QRSaverController+TextDelegates.swift in Sources */,
-				42D26AF6264AEB7600AA2F79 /* QRDetailedViewController+UI.swift in Sources */,
+				42D26AF6264AEB7600AA2F79 /* QRDetailedView+UI.swift in Sources */,
 				429A194E2638844A00541AB2 /* SceneDelegate.swift in Sources */,
 				426610D0263EA83B005B5FF0 /* QRScannerViewController+UI.swift in Sources */,
 				428C7FF7263C936A008E54DE /* QRCode.swift in Sources */,

@@ -23,6 +23,11 @@ class LibraryViewModel {
         }
     }
     
+    func save(code: QRCode) {
+        dataManager.save(code: code)
+        self.loadLibrary()
+    }
+    
     func setLibrary(_ library: [(code: QRCode, id: NSManagedObjectID)]) {
         _library.value = library
     }
