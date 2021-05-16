@@ -51,7 +51,8 @@ class LibraryView: UITableViewController {
     
     //MARK: - Button actions
     @objc func scanAction(_ sender: UIButton!) {
-        let scanerController = QRScanerViewController()
+        let codeViewModel = QRCodeViewModel()
+        let scanerController = QRScanerView(codeViewModel: codeViewModel, libraryViewModel: self.viewModel)
         scanerController.onDismissAction = {
             self.viewModel.loadLibrary()
         }

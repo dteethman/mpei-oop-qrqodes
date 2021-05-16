@@ -1,7 +1,8 @@
 import UIKit
 import AVFoundation
+import DTBunchOfExt
 
-extension QRScanerViewController {
+extension QRScanerView {
     //MARK:- Setup Layout
     func setupLayout() {
         
@@ -51,7 +52,7 @@ extension QRScanerViewController {
         retakeButton.translatesAutoresizingMaskIntoConstraints = false
         retakeButton.layer.cornerRadius = 8
         retakeButton.layer.cornerCurve = .continuous
-        retakeButton.addTarget(self, action: #selector(doneAction(_:)), for: .touchUpInside)
+        retakeButton.addTarget(self, action: #selector(retakeAction(_:)), for: .touchUpInside)
         cardView.addSubview(retakeButton)
         
         doneButton = UIButton()
@@ -125,26 +126,22 @@ extension QRScanerViewController {
         qrPreviewView?.layer.borderColor = UIColor.systemGray5.cgColor
     }
     
-    func updateLayout(state: LayoutState) {
-        switch state {
-        case .scanning:
-            currentState = .scanning
-            
-            if (captureSession?.isRunning == false) {
-                captureSession.startRunning()
+    func updateLayout(code: QRCode?) {
+        if let code = code  {
+            guard let image = code.getImage() else {
+                TapticProvider.entry.provide(.notoficationError)
+                
+                if (captureSession?.isRunning == true) {
+                    captureSession.stopRunning()
+                }
+                if (captureSession?.isRunning == false) {
+                    captureSession.startRunning()
+                }
+                return
             }
             
-            cardViewBottomConstraint.constant = 800
-            
-            UIView.animate(withDuration: 0.15) { [self] in
-                blurEffectView?.alpha = 0
-                self.view.layoutIfNeeded()
-            }
-            
-            
-        case .taken:
-            currentState = .taken
-            
+            TapticProvider.entry.provide(.notificationSuccess)
+            qrPreviewView?.image = image.resizableImage(withCapInsets: UIEdgeInsets(top: 10, left: 10, bottom: 10, right: 10), resizingMode: .stretch)
             if (captureSession?.isRunning == true) {
                 captureSession.stopRunning()
             }
@@ -154,6 +151,19 @@ extension QRScanerViewController {
             UIView.animate(withDuration: 0.2) { [self] in
                 blurEffectView?.alpha = 1
                 self.view.layoutIfNeeded()
+            }
+        } else {
+            if (captureSession?.isRunning == false) {
+                captureSession.startRunning()
+            }
+            
+            cardViewBottomConstraint.constant = 800
+            
+            UIView.animate(withDuration: 0.15) { [self] in
+                blurEffectView?.alpha = 0
+                self.view.layoutIfNeeded()
+            } completion: {_ in
+                self.qrPreviewView?.image = nil
             }
         }
         

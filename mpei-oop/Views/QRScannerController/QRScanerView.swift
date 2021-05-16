@@ -2,12 +2,7 @@ import AVFoundation
 import UIKit
 import DTBunchOfExt
 
-class QRScanerViewController: UIViewController, AVCaptureMetadataOutputObjectsDelegate {
-    enum LayoutState {
-        case scanning
-        case taken
-    }
-    
+class QRScanerView: UIViewController, AVCaptureMetadataOutputObjectsDelegate {
     //MARK:- Variables
     var captureSession: AVCaptureSession!
     var previewLayer: AVCaptureVideoPreviewLayer!
@@ -24,29 +19,41 @@ class QRScanerViewController: UIViewController, AVCaptureMetadataOutputObjectsDe
     
     var cardViewBottomConstraint: NSLayoutConstraint!
     
-    var currentState: LayoutState?
-    
-    var qr: QRCode?
+    private(set) var codeViewModel: QRCodeViewModel
+    private(set) var libraryViewModel: LibraryViewModel
     
     var onDismissAction: (() -> Void)!
     
-
+    
+    init(codeViewModel: QRCodeViewModel, libraryViewModel: LibraryViewModel) {
+        self.codeViewModel = codeViewModel
+        self.libraryViewModel = libraryViewModel
+        
+        super.init(nibName: nil, bundle: nil)
+    }
+    
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
+    
     //MARK:- ViewController lifecycle
     override func viewDidLoad() {
         super.viewDidLoad()
    
         prepareCaptureSession()
-
         setupLayout()
-        updateLayout(state: .scanning)
         setAppearance(isDarkMode)
+        
+        codeViewModel.bind { code in
+            self.updateLayout(code: code)
+        }
     }
 
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         navigationController?.setNavigationBarHidden(true, animated: animated)
 
-        if captureSession?.isRunning == false && currentState == .scanning {
+        if captureSession?.isRunning == false && codeViewModel.code == nil {
             captureSession.startRunning()
         }
     }
@@ -55,7 +62,7 @@ class QRScanerViewController: UIViewController, AVCaptureMetadataOutputObjectsDe
         super.viewWillDisappear(animated)
         navigationController?.setNavigationBarHidden(false, animated: animated)
 
-        if captureSession?.isRunning == false && currentState == .scanning {
+        if captureSession?.isRunning == false && codeViewModel.code == nil {
             captureSession.stopRunning()
         }
     }
@@ -120,22 +127,13 @@ class QRScanerViewController: UIViewController, AVCaptureMetadataOutputObjectsDe
         if let metadataObject = metadataObjects.first {
             guard let readableObject = metadataObject as? AVMetadataMachineReadableCodeObject else { return }
             guard let stringValue = readableObject.stringValue else { return }
-            found(code: stringValue)
+            found(stringValue: stringValue)
         }
     }
 
     //Function called when QR found 
-    func found(code: String) {
-        qr = QRCode(stringValue: code)
-        let image = qr?.getImage() 
-        
-        if let i = image {
-            TapticProvider.entry.provide(.notificationSuccess)
-            qrPreviewView.image = i.resizableImage(withCapInsets: UIEdgeInsets(top: 10, left: 10, bottom: 10, right: 10), resizingMode: .stretch)
-            updateLayout(state: .taken)
-        } else {
-            TapticProvider.entry.provide(.notoficationError)
-        }
+    func found(stringValue: String) {
+        codeViewModel.set(stringValue: stringValue)
     }
 
     //Function used to be called on device without camera
@@ -149,17 +147,17 @@ class QRScanerViewController: UIViewController, AVCaptureMetadataOutputObjectsDe
     //MARK:- Buttons actions
     @objc func backAction(_ sender: UIButton!) {
         self.dismiss(animated: true) {
-            self.onDismissAction?()
+            self.libraryViewModel.loadLibrary()
         }
     }
     
     @objc func retakeAction(_ sender: UIButton!) {
-        updateLayout(state: .scanning)
+        codeViewModel.erase()
     }
     
     @objc func doneAction(_ sender: UIButton!) {
         let vc = QRSaverViewController()
-        vc.qr = self.qr
+        vc.qr = self.codeViewModel.code
         vc.onDismissAction = self.onDismissAction
         navigationController?.pushViewController(vc, animated: true)
     }
