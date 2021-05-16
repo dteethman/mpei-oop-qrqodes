@@ -1,20 +1,8 @@
 import UIKit
 
-class QRSaverViewController: UIViewController {
-    var qr: QRCode? {
-        didSet {
-            if qr?.stringValue != nil {
-                if qr!.stringValue.hasPrefix("WIFI:") {
-                    let wifiqr = WiFiQRCode(stringValue: qr!.stringValue)
-                    if wifiqr.ssid != nil {
-                        qr = wifiqr
-                    }
-                }
-            }
-            
-            updateLayout()
-        }
-    }
+class QRSaverView: UIViewController {
+    private(set) var codeViewModel: QRCodeViewModel
+    private(set) var libraryViewModel: LibraryViewModel
     
     var iconImageView: UIImageView!
     var qrTextView: UITextView!
@@ -26,17 +14,30 @@ class QRSaverViewController: UIViewController {
     
     let descriptionPlaceholderString = "Description (optional)"
     
-    var onDismissAction: (() -> Void)!
+    init(codeViewModel: QRCodeViewModel, libraryViewModel: LibraryViewModel) {
+        self.codeViewModel = codeViewModel
+        self.libraryViewModel = libraryViewModel
+        
+        super.init(nibName: nil, bundle: nil)
+    }
+    
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
     
     override func viewDidLoad() {
         super.viewDidLoad()
         
         setupLayout()
-        updateLayout()
+        setCodeInfo()
         setAppearance(isDarkMode)
-        
     }
     
+    override func viewWillAppear(_ animated: Bool) {
+        codeViewModel.bind { code in
+            self.updateButtonState(code: code)
+        }
+    }
     override func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
         super.traitCollectionDidChange(previousTraitCollection)
         setAppearance(isDarkMode)
@@ -44,15 +45,12 @@ class QRSaverViewController: UIViewController {
     
     @objc func dismissKeyboard(_ sender: UIGestureRecognizer) {
         self.view.endEditing(true)
-        setAppearance(isDarkMode)
     }
     
     @objc func saveAction(_ sender: UIButton!) {
-        let cdManager = QRDataManager()
-        if qr?.title != nil && qr?.stringValue != nil {
-            cdManager.save(code: qr!)
+        if codeViewModel.code != nil && codeViewModel.code?.stringValue != nil {
             dismiss(animated: true) {
-                self.onDismissAction?()
+                self.libraryViewModel.save(code: self.codeViewModel.code!)
             }
         }
         

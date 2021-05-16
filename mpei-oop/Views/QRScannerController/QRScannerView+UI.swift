@@ -129,7 +129,6 @@ extension QRScanerView {
     func updateLayout(code: QRCode?) {
         if let code = code  {
             guard let image = code.getImage() else {
-                TapticProvider.entry.provide(.notoficationError)
                 
                 if (captureSession?.isRunning == true) {
                     captureSession.stopRunning()
@@ -140,7 +139,6 @@ extension QRScanerView {
                 return
             }
             
-            TapticProvider.entry.provide(.notificationSuccess)
             qrPreviewView?.image = image.resizableImage(withCapInsets: UIEdgeInsets(top: 10, left: 10, bottom: 10, right: 10), resizingMode: .stretch)
             if (captureSession?.isRunning == true) {
                 captureSession.stopRunning()

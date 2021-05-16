@@ -4,6 +4,9 @@ import DTBunchOfExt
 
 class QRScanerView: UIViewController, AVCaptureMetadataOutputObjectsDelegate {
     //MARK:- Variables
+    private(set) var codeViewModel: QRCodeViewModel
+    private(set) var libraryViewModel: LibraryViewModel
+    
     var captureSession: AVCaptureSession!
     var previewLayer: AVCaptureVideoPreviewLayer!
     
@@ -19,12 +22,6 @@ class QRScanerView: UIViewController, AVCaptureMetadataOutputObjectsDelegate {
     
     var cardViewBottomConstraint: NSLayoutConstraint!
     
-    private(set) var codeViewModel: QRCodeViewModel
-    private(set) var libraryViewModel: LibraryViewModel
-    
-    var onDismissAction: (() -> Void)!
-    
-    
     init(codeViewModel: QRCodeViewModel, libraryViewModel: LibraryViewModel) {
         self.codeViewModel = codeViewModel
         self.libraryViewModel = libraryViewModel
@@ -39,17 +36,16 @@ class QRScanerView: UIViewController, AVCaptureMetadataOutputObjectsDelegate {
     //MARK:- ViewController lifecycle
     override func viewDidLoad() {
         super.viewDidLoad()
-   
         prepareCaptureSession()
         setupLayout()
         setAppearance(isDarkMode)
-        
-        codeViewModel.bind { code in
-            self.updateLayout(code: code)
-        }
     }
 
     override func viewWillAppear(_ animated: Bool) {
+        codeViewModel.bind { code in
+            self.updateLayout(code: code)
+        }
+        
         super.viewWillAppear(animated)
         navigationController?.setNavigationBarHidden(true, animated: animated)
 
@@ -133,6 +129,7 @@ class QRScanerView: UIViewController, AVCaptureMetadataOutputObjectsDelegate {
 
     //Function called when QR found 
     func found(stringValue: String) {
+        TapticProvider.entry.provide(.notificationSuccess)
         codeViewModel.set(stringValue: stringValue)
     }
 
@@ -156,9 +153,7 @@ class QRScanerView: UIViewController, AVCaptureMetadataOutputObjectsDelegate {
     }
     
     @objc func doneAction(_ sender: UIButton!) {
-        let vc = QRSaverViewController()
-        vc.qr = self.codeViewModel.code
-        vc.onDismissAction = self.onDismissAction
+        let vc = QRSaverView(codeViewModel: codeViewModel, libraryViewModel: libraryViewModel)
         navigationController?.pushViewController(vc, animated: true)
     }
     

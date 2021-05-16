@@ -53,9 +53,6 @@ class LibraryView: UITableViewController {
     @objc func scanAction(_ sender: UIButton!) {
         let codeViewModel = QRCodeViewModel()
         let scanerController = QRScanerView(codeViewModel: codeViewModel, libraryViewModel: self.viewModel)
-        scanerController.onDismissAction = {
-            self.viewModel.loadLibrary()
-        }
         
         let scaner = UINavigationController(rootViewController: scanerController)
         scaner.modalPresentationStyle = .fullScreen

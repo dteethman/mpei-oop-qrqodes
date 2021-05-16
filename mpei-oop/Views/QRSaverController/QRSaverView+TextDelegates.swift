@@ -1,6 +1,6 @@
 import UIKit
 
-extension QRSaverViewController: UITextFieldDelegate, UITextViewDelegate {
+extension QRSaverView: UITextFieldDelegate, UITextViewDelegate {
     //MARK:- Text Field Delegates
     
     func textFieldShouldReturn(_ textField: UITextField) -> Bool {
@@ -15,10 +15,10 @@ extension QRSaverViewController: UITextFieldDelegate, UITextViewDelegate {
         let newString = (textField.text! as NSString).replacingCharacters(in: range, with: string)
         if textField == titleTextField {
             if newString.count > 0 {
-                qr?.title = newString
+                self.codeViewModel.updateTitle(newString)
                 saveButton?.isEnabled = true
             } else {
-                qr?.title = nil
+                self.codeViewModel.updateTitle(nil)
                 saveButton?.isEnabled = false
             }
             
@@ -45,9 +45,9 @@ extension QRSaverViewController: UITextFieldDelegate, UITextViewDelegate {
             }
             
             if textView.textColor != .tertiaryLabel {
-                qr?.description = textView.text
+                codeViewModel.updateDescription(textView.text)
             } else {
-                qr?.description = nil
+                codeViewModel.updateDescription(nil)
             }
         }
     }

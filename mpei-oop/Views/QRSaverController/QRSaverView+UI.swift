@@ -1,6 +1,6 @@
 import UIKit
 
-extension QRSaverViewController {
+extension QRSaverView {
     func setupLayout() {
         let safeGuide = view.safeAreaLayoutGuide
         
@@ -79,19 +79,32 @@ extension QRSaverViewController {
         
     }
     
-    func updateLayout() {
-        if qr is WiFiQRCode {
+    func setCodeInfo() {
+        if codeViewModel.code is WiFiQRCode {
             iconImageView?.image = .init(systemName: "wifi")
         } else {
             iconImageView?.image = .init(systemName: "qrcode")
         }
         
-        qrTextView?.attributedText = qr?.getInfo()
-        if qr?.title == nil || qr?.title == "" {
-            saveButton?.isEnabled = false
+        qrTextView?.attributedText = codeViewModel.code?.getInfo()
+        
+    }
+    
+    func updateButtonState(code: QRCode?) {
+        if let code = code {
+            if code.title != nil && code.title != "" {
+                if !code.title!.trimmingCharacters(in: .whitespaces).isEmpty {
+                    saveButton?.isEnabled = true
+                } else {
+                    saveButton?.isEnabled = false
+                }
+            } else {
+                saveButton?.isEnabled = false
+            }
         } else {
-            saveButton?.isEnabled = true
+            saveButton?.isEnabled = false
         }
+        setAppearance(isDarkMode)
     }
     
     func setAppearance(_ isDarkMode: Bool) {

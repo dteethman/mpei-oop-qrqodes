@@ -24,16 +24,16 @@ class QRCodeViewModel {
         }
     }
     
-    func update(title: String? = nil, description: String? = nil) {
+    func updateTitle(_ title: String?) {
         if let tempCode = code {
-            if let title = title {
-                tempCode.title = title
-            }
-            
-            if let description = description {
-                tempCode.description = description
-            }
-            
+            tempCode.title = title
+            _code.value = tempCode
+        }
+    }
+    
+    func updateDescription(_ description: String?) {
+        if let tempCode = code {
+            tempCode.description = description
             _code.value = tempCode
         }
     }
